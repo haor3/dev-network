@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
+// Get the secret key
+const secretKey = require('../../config/keys').secretKey
 
 // @route   GET /api/user/test
 // @desc    Teset User routs
@@ -53,7 +57,22 @@ router.post('/login', (req, res) => {
         bcrypt.compare(password, user.password)
           .then(isMatch => {
             if(isMatch){
-              return res.json(user)
+              const payload = {
+                id: user.id,
+                name: user.name,
+                password: user.password
+              }
+              jwt.sign(
+                payload, 
+                secretKey, 
+                {expiresIn: 3600}, 
+                (err, token) => {
+                  res.json({
+                    success: true,
+                    token: 'Bearer '+token
+                  })
+              });
+              // return res.json(user)
             }else{
               return res.status(400).json('Password is wrong')
             }
