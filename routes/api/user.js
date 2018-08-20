@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../../models/User')
+const bcrypt = require('bcryptjs')
 
 // @route   GET /api/user/test
 // @desc    Teset User routs
@@ -11,19 +12,29 @@ router.get('/test', (req, res) => res.send('tests'))
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
-  // const {name, email, password} = req.body
-  User.findOne({email: req.body.email})
+  const {name, email, password} = req.body
+  User.findOne({email})
     .then(user => {
       if(user){
         return res.status(400).json('Email is existed')
       }else{
         const newUser = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password
+          name: name,
+          email: email,
+          password: password
         })
-        newUser.save()
-        return res.json(newUser)
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+              // Store hash in your password DB.
+              if(err){
+                throw err
+              }
+              newUser.password = hash
+              newUser.save()
+                .then(user => res.json(user))
+                .catch(err => console.log(err))
+          })
+        });
       }
     })
     .catch(err => console.log(err))
