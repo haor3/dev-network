@@ -40,4 +40,26 @@ router.post('/register', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// @route   GET /api/user/login
+// @desc    Login user
+// @access  Public
+router.post('/login', (req, res) => {
+  const {name, email, password} = req.body
+  User.findOne({email})
+    .then(user => {
+      if(!user){
+        return res.status(400).json('User cannot be found')
+      }else{
+        bcrypt.compare(password, user.password)
+          .then(isMatch => {
+            if(isMatch){
+              return res.json(user)
+            }else{
+              return res.status(400).json('Password is wrong')
+            }
+          });
+      }
+    })
+})
+
 module.exports = router
