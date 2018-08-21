@@ -6,6 +6,9 @@ const passport = require('passport')
 const Profile = require('../../models/Profile')
 const User = require('../../models/User')
 
+// Load profile validation
+const profileValidate = require('../../validation/profile')
+
 // @route   GET /api/profile/test
 // @desc    Teset Profile routs
 // @access  Public
@@ -18,7 +21,7 @@ router.get('/', passport.authenticate('jwt', { session: false }),
     (req, res) => {
       const errors = {}
 
-      Profile.findOne({id: req.body.id})
+      Profile.findOne({user: req.user.id})
         .then(profile => {
           if(!profile){
             errors.noProfile = 'No profile exists'
@@ -30,40 +33,26 @@ router.get('/', passport.authenticate('jwt', { session: false }),
     }
 );
 
-// @route   GET /api/profile/create
-// @desc    Create user profile
-// @access  Private
-router.post('/', passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-      const errors = {}
-
-      Profile.findOne({id: req.body.id})
-        .then(profile => {
-          if(!profile){
-            errors.noProfile = 'No profile exists'
-            return res.status(400).json(errors) 
-          }
-          return res.json(profile)
-        })
-        .catch(err => err.status(400).json(err))
-    }
-);
-
-// @route   GET /api/profile/
+// @route   POST /api/profile/
 // @desc    Create or Edit profile
 // @access  Private
 router.post('/', passport.authenticate('jwt', { session: false }),
     (req, res) => {
-      const errors = {}
+      const {errors, isValid} = profileValidate(req.body)
+      if(!isValid){
+        return res.status(400).json(errors)
+      }
+
       const profileFields = {}
       profileFields.user = req.user.id
 
       if(req.body.handle) profileFields.handle = req.body.handle
+      if(req.body.status) profileFields.status = req.body.status
       if(req.body.company) profileFields.company = req.body.company
       if(req.body.bio) profileFields.bio = req.body.bio
       // Split skills into array
       if(typeof req.body.skills !== 'undefined'){
-        profileFields.skills = req.body.skills.split(',s')
+        profileFields.skills = req.body.skills.split(',')
       }
       if(req.body.githubAcc) profileFields.githubAcc = req.body.githubAcc
       if(req.body.experiences) profileFields.experiences = req.body.experiences
@@ -74,11 +63,11 @@ router.post('/', passport.authenticate('jwt', { session: false }),
       if(req.body.facebook) profileFields.social.facebook = req.body.facebook
       if(req.body.twitter) profileFields.social.twitter = req.body.twitter
 
-      Profile.findOne({id: req.body.id})
+      Profile.findOne({user: req.user.id})
         .then(profile => {
           if(profile){
             // Update
-            Profile.findByIdAndUpdate(
+            Profile.findOneAndUpdate(
               {user: req.user.id},
               {$set: profileFields},
               {new: true}
