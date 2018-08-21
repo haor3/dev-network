@@ -21,6 +21,10 @@ module.exports = registerValidate = (data) => {
   if(Validator.isEmpty(data.email)){
     errors.email = 'Email field must be required'
   }
+  // Must be in email format
+  if(!Validator.isEmail(data.email)){
+    errors.email = 'Must be in email format'
+  }
   // Password field must be required
   if(Validator.isEmpty(data.password)){
     errors.password = 'Password field must be required'
