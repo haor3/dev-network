@@ -53,4 +53,20 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(400).json({noPost: `No Posts are found with this ${req.params.id}`}))
 })
 
+// @route   DELETE /api/posts/:id
+// @desc    Delete post by id
+// @access  Private
+router.delete('/:id', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+      Post.findById(req.params.id)
+      .then(post => {
+        if(post.user.toString() !== req.user.id){
+          return res.status(400).json({noAuth: 'No authorized'})
+        }
+        post.remove().then(() => res.json({success: true}))
+      })
+      .catch(err => res.status(400).json({noPost: 'No posts are found'}))
+    }
+);
+
 module.exports = router
