@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const passport = require('passport')
 
 // Get the secret key
 const secretKey = require('../../config/keys').secretKey
@@ -81,4 +82,12 @@ router.post('/login', (req, res) => {
     })
 })
 
+// @route   GET /api/user/current
+// @desc    Current user
+// @access  Private
+router.get('/current', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        res.send(req.user);
+    }
+);
 module.exports = router
