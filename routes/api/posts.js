@@ -76,10 +76,7 @@ router.post('/like/:id', passport.authenticate('jwt', { session: false }),
     (req, res) => {
       Post.findById(req.params.id)
       .then(post => {
-        if(post.user.toString() !== req.user.id){
-          return res.status(400).json({noAuth: 'No authorized'})
-        }
-        if(post.likes.filter(like => like.user.toString() === req.usesr.id).length > 0){
+        if(post.likes.filter(like => like.user.toString() === req.user.id).length > 0){
           return res.status(400).json({alreadyLiked: 'User already liked this'})
         }else{
           post.likes.unshift({user: req.user.id})
@@ -97,10 +94,7 @@ router.post('/unlike/:id', passport.authenticate('jwt', { session: false }),
     (req, res) => {
       Post.findById(req.params.id)
       .then(post => {
-        if(post.user.toString() !== req.user.id){
-          return res.status(400).json({noAuth: 'No authorized'})
-        }
-        if(post.likes.filter(like => like.user.toString() === req.usesr.id).length === 0){
+        if(post.likes.filter(like => like.user.toString() === req.user.id).length === 0){
           return res.status(400).json({notliked: 'User havent\'t liked this'})
         }
         // get remove index
