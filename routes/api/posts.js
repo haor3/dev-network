@@ -69,4 +69,51 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }),
     }
 );
 
+// @route   POST /api/posts/like/:id
+// @desc    Like post by id
+// @access  Private
+router.post('/like/:id', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+      Post.findById(req.params.id)
+      .then(post => {
+        if(post.user.toString() !== req.user.id){
+          return res.status(400).json({noAuth: 'No authorized'})
+        }
+        if(post.likes.filter(like => like.user.toString() === req.usesr.id).length > 0){
+          return res.status(400).json({alreadyLiked: 'User already liked this'})
+        }else{
+          post.likes.unshift({user: req.user.id})
+          post.save().then(post => res.json(post))
+        }
+      })
+      .catch(err => res.status(400).json({noPost: 'No posts are found'}))
+    }
+);
+
+// @route   POST /api/posts/unlike/:id
+// @desc    Unlike post by id
+// @access  Private
+router.post('/unlike/:id', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+      Post.findById(req.params.id)
+      .then(post => {
+        if(post.user.toString() !== req.user.id){
+          return res.status(400).json({noAuth: 'No authorized'})
+        }
+        if(post.likes.filter(like => like.user.toString() === req.usesr.id).length === 0){
+          return res.status(400).json({notliked: 'User havent\'t liked this'})
+        }
+        // get remove index
+        const removeIndex = post.likes
+          .map(like => like.user.toString())
+          .indexOf(req.user.id)
+        // splice out of array
+        post.likes.splice(removeIndex, 1)
+        // save
+        post.save().then(post => res.json(post))
+      })
+      .catch(err => res.status(400).json({noPost: 'No posts are found'}))
+    }
+);
+
 module.exports = router
