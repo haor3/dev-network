@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 // Get the secret key
 const secretKey = require('../../config/keys').secretKey
+
+// Load User model
+const User = require('../../models/User')
 
 // Load input validation
 const registerValidate = require('../../validation/register')
