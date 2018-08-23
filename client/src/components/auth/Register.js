@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import PropType from 'prop-types'
 import classnames from 'classnames'
+import { registerUser } from '../../actions/user.actions'
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.registerState.user,
+    errors: state.registerState.errors
+  }
+}
+
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     registerAuth: (newUser) => dispatch(registerAuth(this.props.user))
+//   }
+// }
 class Register extends Component {
   constructor(){
     super();
@@ -9,8 +24,7 @@ class Register extends Component {
       name: '',
       email:'',
       password: '',
-      password1: '',
-      errors: {}
+      password1: ''
     }
   }
   onChange = (e) => {
@@ -19,21 +33,21 @@ class Register extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     const {name, email, password, password1} = this.state
-    const newUser = {
+    const userData = {
       name: name,
       email: email,
       password: password,
       password1: password1
     }
-    axios.post('/api/user/register', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({errors: err.response.data}))
+    this.props.registerUser(userData)
   }
   render(){
-    const {errors} = this.state
+    const {errors} = this.props
+    const {user} = this.props
     console.log(errors)
     return(
       <div className="register">
+      { (user) ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -101,5 +115,10 @@ class Register extends Component {
     )
   }
 }
+Register.propTypes = {
+  registerUser: PropType.func.isRequired,
+  user: PropType.object.isRequired,
+  errors: PropType.object.isRequired
+}
 
-export default Register
+export default connect(mapStateToProps, {registerUser})(Register)

@@ -1,6 +1,19 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import classnames from 'classnames'
+import PropType from 'prop-types'
+import { connect } from 'react-redux'
+import { loginUser } from '../../actions/user.actions'  
+
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.loginState.isAuthenticated,
+    user: state.loginState.user,
+    errors: state.loginState.errors,
+  }
+}
+
+
+
 class Login extends Component {
   constructor(){
     super()
@@ -10,24 +23,28 @@ class Login extends Component {
       errors: {}
     }
   }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.isAuthenticated){
+      this.props.history.push('/dashboard')
+    }
+  }
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
   onSubmit = (e) => {
     e.preventDefault()
     const {email, password} = this.state
-    const user = {
+    const userData = {
       email: email,
       password: password
     }
-    axios.post('/api/user/login', user)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({errors: err.response.data}))
+    this.props.loginUser(userData)
   }
   render(){
-    const {errors} = this.state
+    const {user, errors} = this.props
     return(
       <div className="login">
+      {(user) ? user.name : null}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -70,4 +87,10 @@ class Login extends Component {
   }
 }
 
-export default Login
+Login.propTypes = {
+  loginUser: PropType.func.isRequired,
+  user: PropType.object.isRequired,
+  errors: PropType.object.isRequired
+}
+
+export default connect(mapStateToProps, {loginUser})(Login)
