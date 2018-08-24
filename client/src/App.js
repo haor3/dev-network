@@ -11,7 +11,6 @@ import { setCurrentUser } from './actions/user.actions'
 import store from './store'
 
 import './App.css';
-
  
 if(localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken)
@@ -24,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
+        <div className="App"> 
           <Navbar />
           <Route exact path="/" component={Landing} />
           <div className="container">
