@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { registerState, loginState } from './reducers/user.reducers'
+import { errorState } from './reducers/error.reducers'
 
-const rootReducer = combineReducers({registerState, loginState})
+const rootReducer = combineReducers({registerState, loginState, errorState})
 const store = createStore(
                 rootReducer, 
                 compose(applyMiddleware(thunkMiddleware),
