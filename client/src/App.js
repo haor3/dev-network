@@ -5,6 +5,7 @@ import Footer from './components/layout/Footer'
 import Landing from './components/layout/Landing'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
+import Dashboard from './components/layout/Dashboard'
 import jwt_decode from 'jwt-decode'
 import setAuthToken from './utils/setAuthToken'
 import { setCurrentUser } from './actions/user.actions'
@@ -25,6 +26,7 @@ class App extends Component {
       <Router>
         <div className="App"> 
           <Navbar />
+          <Dashboard />
           <Route exact path="/" component={Landing} />
           <div className="container">
             <Route exact path="/login" component={Login} />
