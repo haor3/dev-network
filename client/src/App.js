@@ -8,7 +8,7 @@ import Login from './components/auth/Login'
 import Dashboard from './components/layout/Dashboard'
 import jwt_decode from 'jwt-decode'
 import setAuthToken from './utils/setAuthToken'
-import { setCurrentUser } from './actions/user.actions'
+import { setCurrentUser, logoutUser } from './actions/user.actions'
 import store from './store'
 
 import './App.css';
@@ -17,6 +17,12 @@ if(localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken)
   const decoded = jwt_decode(localStorage.jwtToken)
   store.dispatch(setCurrentUser(decoded))
+}
+// check for expired token
+const currentTime = Date.now()/1000
+if(decoded.exp < currentTime){
+  // log out user
+  store.dispatch(logoutUser())
 }
 
 
