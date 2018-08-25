@@ -1,1 +1,1 @@
-build a web app with React-Redux, using jwtToken, passport and mongoDB
+build a web app with React-Redux, using Express, JWT, Passport and MongoDB
