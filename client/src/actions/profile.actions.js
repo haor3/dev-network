@@ -3,7 +3,8 @@ import axios from 'axios'
 import {
   PROFILE_LOADING,
   PROFILE_NOT_FOUND,
-  PROFILE_FOUND
+  PROFILE_FOUND,
+  PROFILE_CLEAR
 } from './types'
 
 export const getProfile = () => dispatch => {
@@ -21,4 +22,11 @@ export const getProfile = () => dispatch => {
         payload: {}
       })
     )
+}
+
+export const clearProfile = () => dispatch => {
+  dispatch({
+    type: PROFILE_CLEAR,
+    payload: null
+  })
 }
