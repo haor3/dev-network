@@ -6,7 +6,6 @@ import InputForm from '../../common/InputForm'
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.loginState.isAuthenticated,
-    // user: state.loginState.user,
     errors: state.errorState.errors,
   }
 }
@@ -21,7 +20,7 @@ class Login extends Component {
   }
   componentDidUpdate(prevProps){
     if(prevProps.isAuthenticated !== this.props.isAuthenticated){
-      this.props.history.push('/')
+      this.props.history.push('/dashboard')
     }
     if(prevProps.errors !== this.props.errors){
       this.setState({errors: this.props.errors})
