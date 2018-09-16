@@ -29,7 +29,7 @@ router.get('/', passport.authenticate('jwt', { session: false }),
           }
           return res.json(profile)
         })
-        .catch(err => err.status(400).json(err))
+        .catch(err => res.status(400).json(err))
     }
 );
 
@@ -55,7 +55,6 @@ router.post('/', passport.authenticate('jwt', { session: false }),
         profileFields.skills = req.body.skills.split(',')
       }
       if(req.body.githubAcc) profileFields.githubAcc = req.body.githubAcc
-      if(req.body.experiences) profileFields.experiences = req.body.experiences
       // Social
       profileFields.social = {}
       if(req.body.youtube) profileFields.social.youtube = req.body.youtube

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Landing from './components/layout/Landing'
@@ -7,7 +9,8 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Dashboard from './components/layout/Dashboard'
 import PrivateRoute from './components/PrivateRoute'
-import jwt_decode from 'jwt-decode'
+import CreateProfile from './common/profile/CreateProfile'
+
 import setAuthToken from './utils/setAuthToken'
 import { setCurrentUser, logoutUser } from './actions/user.actions'
 import {clearProfile} from './actions/profile.actions'
@@ -47,6 +50,7 @@ class App extends Component {
           </div>
           <Switch>
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/create-profile" component={CreateProfile} />
           </Switch>
           <Footer />
         </div>

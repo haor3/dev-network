@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import { registerUser } from '../../actions/user.actions'
-import InputForm from '../../common/InputForm'
+import InputForm from '../../common/input-form/InputForm'
 
 const mapStateToProps = (state) => {
   return {

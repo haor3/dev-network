@@ -28,28 +28,6 @@ const ProfileSchema = new Schema({
   githubAcc: {
     type: String
   },
-  experiences: [
-    {
-      title: {
-        type: String,
-        require: true
-      },
-      company: {
-        type: String,
-        require: true
-      },
-      jobDesc: {
-        type: String
-      },
-      from: {
-        type: Date, 
-        require: true
-      },
-      to: {
-        type: Date
-      }
-    }
-  ],
   social: {
     youtube: {
       type: String

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import {getProfile} from '../../actions/profile.actions'
 import {connect} from 'react-redux'
-import Spinner from '../../common/Spinner'
+import Spinner from '../../common/input-form/Spinner'
 
 const mapStateToProps = state => {
   return {
@@ -16,16 +16,33 @@ class Dashboard extends Component {
   }
   render(){
     const {user} = this.props.user
-    const {profile, loading} = this.props.profile
+    const {profile, isLoading} = this.props.profile
     
     let content
 
-    if(profile == null || loading){
+    if(profile === null || isLoading){
       content = <Spinner />
     }else {
       // Check if logged in user has profile data
       if (Object.keys(profile).length > 0) {
-        content = <h4>TODO: DISPLAY PROFILE</h4>;
+        // content = <h4>TODO: DISPLAY PROFILE</h4>;
+        content = (
+          <div>
+            <p className="lead text-muted">
+              Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
+            </p>
+            {/* <ProfileActions />
+            <Experience experience={profile.experience} />
+            <Education education={profile.education} /> */}
+            <div style={{ marginBottom: '60px' }} />
+            {/* <button
+              onClick={this.onDeleteClick.bind(this)}
+              className="btn btn-danger"
+            >
+              Delete My Account
+            </button> */}
+          </div>
+        );
       } else {
         // User is logged in but has no profile
         content = (
