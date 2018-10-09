@@ -18,11 +18,11 @@
     "nodemon": "^1.18.4"
   },
   "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild":
       "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
