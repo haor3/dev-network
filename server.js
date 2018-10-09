@@ -32,7 +32,6 @@ mongoose.connect(db, { useNewUrlParser: true })
   .catch(err => console.log(err))
 
 // Route config
-app.get('/', (req, res) => res.send('hello'))
 app.use('/api/user', user)
 app.use('/api/posts', posts)
 app.use('/api/profile', profile)
