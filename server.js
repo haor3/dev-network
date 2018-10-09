@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const path = require('path')
 
 const app = express() 
 
@@ -35,6 +36,15 @@ app.get('/', (req, res) => res.send('hello'))
 app.use('/api/user', user)
 app.use('/api/posts', posts)
 app.use('/api/profile', profile)
+
+//server static assests if in production
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('client/build'))
+
+  app.get('*', (rq, res) => {
+    res.sendFile(path.solve(__dirname, 'client', 'build', 'index.html'))
+  }) 
+}
 
 // Port Config 
 const port = process.env.PORT || 5000
