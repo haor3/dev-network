@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 // Get the secret key
-const secretKey = require('../../config/keys').secretKey
+const secretOrKey = require('../../config/keys').secretOrKey
 
 // Load User model
 const User = require('../../models/User')
@@ -82,7 +82,7 @@ router.post('/login', (req, res) => {
               }
               jwt.sign(
                 payload, 
-                secretKey, 
+                secretOrKey, 
                 {expiresIn: 3600}, 
                 (err, token) => {
                   res.json({
