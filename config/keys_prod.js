@@ -1,4 +1,4 @@
 module.exports = {
   mongoURI: process.env.MONGO_URI,
-  secretOrKey: process.env.git 
+  secretOrKey: process.env.KEY_OR_SECRET
 };
