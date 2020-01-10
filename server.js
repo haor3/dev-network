@@ -10,12 +10,12 @@ const app = express()
 app.use(passport.initialize())
 
 // Passport config 
-require('./config/passport')(passport)
+require('./server/config/passport')(passport)
 
 // Import Routes
-const user = require('./routes/api/user')
-const posts = require('./routes/api/posts')
-const profile = require('./routes/api/profile')
+const user = require('./server/routes/api/user')
+const posts = require('./server/routes/api/posts')
+const profile = require('./server/routes/api/profile')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // DB config
-const db = require('./config/keys').mongoURI
+const db = require('./server/config/keys').mongoURI
 
 // Connect to MongoDB
 mongoose.connect(db, { useNewUrlParser: true })
