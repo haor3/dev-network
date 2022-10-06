@@ -10,10 +10,11 @@
     "concurrently": "^3.6.1",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.2.9",
-    "passport": "^0.4.0",
+    "mongoose": "^5.13.15",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^10.6.0"
+    "validator": "^13.7.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "nodemon": "^1.18.4",
@@ -37,7 +38,10 @@
     "eject": "react-scripts eject",
     "server": "node server.js",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "snyk": true
 }
